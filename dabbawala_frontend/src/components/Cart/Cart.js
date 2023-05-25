@@ -12,7 +12,7 @@ const Cart = (props) => {
   const [didSubmit, setDidSubmit] = useState(false);
   const cartCtx = useContext(CartContext);
 
-  const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
+  const totalAmount = `${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
 
   const cartItemRemoveHandler = (id) => {
@@ -74,7 +74,7 @@ const Cart = (props) => {
       {cartItems}
       <div className={classes.total}>
         <span>Total Amount</span>
-        <span>{totalAmount}</span>
+        <span><span>&#8377;</span>{totalAmount}</span>
       </div>
       {isCheckout && (
         <Checkout onConfirm={submitOrderHandler} onCancel={props.onClose} />
@@ -88,11 +88,12 @@ const Cart = (props) => {
   const didSubmitModalContent = (
     <React.Fragment>
       <p>Successfully sent the order!</p>
+      <p>मागणी यशस्वीपणे मिळाली!</p>
       <div className={classes.actions}>
-      <button className={classes.button} onClick={props.onClose}>
-        Close
-      </button>
-    </div>
+        <button className={classes.button} onClick={props.onClose}>
+          Close
+        </button>
+      </div>
     </React.Fragment>
   );
 
