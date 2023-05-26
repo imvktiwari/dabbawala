@@ -1,11 +1,10 @@
-.summary {
+.form {
   text-align: center;
   max-width: 45rem;
   width: 90%;
   margin: auto;
   margin-top: -10rem;
   position: relative;
-  /* background-color: #383838; */
   background-color: rgb(201, 195, 195);
   color: #8a2b06;
   border-radius: 14px;
@@ -13,7 +12,75 @@
   box-shadow: 0 1px 18px 10px rgba(165, 17, 17, 0.25);
 }
 
-.summary h2 {
-  font-size: 2rem;
+.form h2 {
+  font-size: 2.5rem;
   margin-top: 0;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-weight: bolder;
+}
+.formInputControl input { 
+  text-align: center;
+  size: auto;
+  width:100%;
+  background: transparent;
+  border-bottom: 1px solid #8a2b06;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  overflow: hidden;
+  color: #8a2b06;
+
+  font-size: 2rem;
+  font-family: sans-serif;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+  margin-bottom: 5%;
+}
+
+input:focus {
+  outline: none;
+}
+input:focus::placeholder {
+  color: transparent;
+}
+
+::placeholder {
+  color: rgb(105, 99, 99);
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  letter-spacing: normal;
+  font-size: auto;
+}
+
+.signupButton {
+  font: inherit;
+  color: #5a1a01;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  border-radius: 25px;
+  padding: 0.5rem 2rem; 
+}
+.signupButton:hover,
+.signupButton:active {
+  color: black;
+}
+.submitButton {
+  background-color: #5a1a01;
+  color: white;
+  border-radius: 20px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 2rem;
+  padding-right: 5%;
+  padding-left: 5%;
+  cursor: pointer;
+}
+.submitButton:hover,
+.submitButton:active {
+  background-color: #0b0300e4;
+}
+
+@media (max-width: 504px) {
+  .formInputControl input {
+    font-size: 1rem;
+  }
 }

@@ -2,7 +2,7 @@
     margin-top: 7%;
     width: 100%;
     padding: 0 10%;
-    height: auto;
+    height: 28vh;
     background-color: #8a2b06bd;
     color: white;
 
@@ -14,4 +14,10 @@
     font-size: 1rem;
     overflow: auto;
     text-align: center;
+}
+
+@media (max-width: 706px) {
+    .footer {
+        height: 15vh;
+    }
 }
