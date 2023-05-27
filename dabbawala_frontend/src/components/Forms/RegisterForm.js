@@ -65,10 +65,6 @@ const LoginForm = () => {
       navigate("/");
     }
   }, []);
-  // const emailChangeHandler (event) => {
-  //   setEnteredEmail(event.target.value);
-  // };
-
   return (
     <form onSubmit={submitHandler} className={classes.form}>
       <h2>Sign Up</h2>
