@@ -1,37 +1,111 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 // import axios from "axios";
 import { useNavigate } from "react-router";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 import classes from './RegisterForm.module.css';
 //NOW USING REACT TO VALIDATE FORM
+const isEmpty = (value) => value.trim() === '';
+const isSixChars = (value) => value.trim().length === 6;//For Postal Code
+const isEightChars = (value) => value.trim().length >= 8;
+const isTenChars = (value) => value.trim().length === 10;
+const validateEmail = (email) => {
+  const atIndex = email.indexOf('@');
+  return atIndex === -1;
+}
 
 const LoginForm = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [workaddress, setWorkaddress] = useState("");
-  const [city, setCity] = useState("Mumbai");
-  const [postalcode, setPostalcode] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
 
+  const notification = (noti) => {
+    toast.error(noti, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  }
+
+  const [formInputsValidity, setFormInputsValidity] = useState({
+    name: true,
+    email: true,
+    password: true,
+    workaddress: true,
+    city: true,
+    postalCode: true,
+    phoneNumber: true,
+  });
+
+  const nameInputRef = useRef();
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
+  const workaddressInputRef = useRef();
+  const cityInputRef = useRef();
+  const postalCodeInputRef = useRef();
+  const phoneNumberInputRef = useRef();
 
   const BACKEND_BASE_URL = "http://localhost:5000";
   const navigate = useNavigate();
-
   const submitHandler = async (event) => {
     event.preventDefault();
+
+    const enteredName = nameInputRef.current.value;
+    const enteredEmail = emailInputRef.current.value;
+    const enteredPassword = passwordInputRef.current.value;
+    const enteredWorkaddress = workaddressInputRef.current.value;
+    const enteredPostalCode = postalCodeInputRef.current.value;
+    const enteredCity = cityInputRef.current.value;
+    const enteredPhoneNumber = phoneNumberInputRef.current.value;
+
+
+    const enteredNameIsValid = !isEmpty(enteredName);
+    const enteredEmailIsValid = !validateEmail(enteredEmail);
+    const enteredPasswordIsValid = isEightChars(enteredPassword);
+    const enteredWorkaddressIsValid = !isEmpty(enteredWorkaddress);
+    const enteredCityIsValid = !isEmpty(enteredCity);
+    const enteredPostalCodeIsValid = isSixChars(enteredPostalCode);
+    const enteredPhoneNumberIsValid = isTenChars(enteredPhoneNumber);
+
+
+
+    setFormInputsValidity(
+      {
+        name: enteredNameIsValid,
+        email: enteredEmailIsValid,
+        password: enteredPasswordIsValid,
+        workaddress: enteredWorkaddressIsValid,
+        city: enteredCityIsValid,
+        postalCode: enteredPostalCodeIsValid,
+        phoneNumber: enteredPhoneNumberIsValid,
+      }
+    );
+
+    const formIsValid =
+      enteredNameIsValid && enteredEmailIsValid && enteredPasswordIsValid &&
+      enteredWorkaddressIsValid &&
+      enteredCityIsValid &&
+      enteredPostalCodeIsValid && enteredPhoneNumberIsValid;
+
+    if (!formIsValid) {
+      return;
+    }
+
+    //Send to data base
     const enteredData = {
-      name: name,
-      email: email,
-      password: password,
-      workaddress: workaddress,
-      city: city,
-      postalcode: postalcode,
-      phone: phoneNumber,
+      name: enteredName,
+      email: enteredEmail,
+      password: enteredPassword,
+      workaddress: enteredWorkaddress,
+      city: enteredCity,
+      postalcode: enteredPostalCode,
+      phone: enteredPhoneNumber,
     };
+
     const entryData = async () => {
       const response = await fetch(
         `${BACKEND_BASE_URL}/register`, {
@@ -44,20 +118,48 @@ const LoginForm = () => {
       );
       //ERROR
       if (!response.ok) {
-        throw new Error('Something went wrong!');
+        throw new Error('You are already logged in!');
       }
-//SUCCESS
-      toast.success("Successfully Signed Up !", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      //SUCCESS
       setTimeout(() => {
         navigate("/login");
-      }, 1000);
-      console.log(enteredData);
+      }, 3000);
+      toast.success('Registered!', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      // console.log(enteredData);
     };
+
+
     entryData().catch((error) => {
-      alert(error.message);
+      toast.error('You are already registered', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+
+      nameInputRef.current.value = '';
+      emailInputRef.current.value = '';
+      passwordInputRef.current.value = '';
+      workaddressInputRef.current.value = '';
+      postalCodeInputRef.current.value = '';
+      cityInputRef.current.value = '';
+      phoneNumberInputRef.current.value = '';
+
     });
+
   };
 
   useEffect(() => {
@@ -65,6 +167,7 @@ const LoginForm = () => {
       navigate("/");
     }
   }, []);
+
   return (
     <form onSubmit={submitHandler} className={classes.form}>
       <h2>Sign Up</h2>
@@ -72,64 +175,67 @@ const LoginForm = () => {
         <div>
           <input
             type='name'
-            value={name}
+            ref={nameInputRef}
             placeholder='Enter your full name'
-            onChange={(event) => { setName(event.target.value) }}
           />
+          {!formInputsValidity.name && notification("Please enter a valid name!")}
+
         </div>
         <div>
           <input
             type='number'
-            value={phoneNumber}
+            ref={phoneNumberInputRef}
             placeholder='Enter your mobile number'
-            onChange={(event) => { setPhoneNumber(event.target.value) }}
           />
+          {!formInputsValidity.phoneNumber && notification("Please enter a valid phone number!")}
         </div>
         <div>
           <input
             type='email'
-            value={email}
+            ref={emailInputRef}
             placeholder='Enter your email address'
-            onChange={(event) => { setEmail(event.target.value) }}
           />
+          {!formInputsValidity.email && notification("Please enter a valid email address!")}
         </div>
         <div>
           <input
             type='password'
             placeholder='Enter your password'
-            value={password}
-            onChange={(event) => { setPassword(event.target.value) }}
+            ref={passwordInputRef}
           />
+          {!formInputsValidity.password && notification("Password must be eight characters long!")}
         </div>
         <div>
           <input
             type='text'
-            value={workaddress}
+            ref={workaddressInputRef}
             placeholder='Enter your work address'
-            onChange={(event) => { setWorkaddress(event.target.value) }}
           />
+          {!formInputsValidity.workaddress && notification("Please enter a valid work address!")}
         </div>
         <div>
           <input
             type='number'
-            value={postalcode}
+            ref={postalCodeInputRef}
             placeholder='Enter your postal code'
-            onChange={(event) => { setPostalcode(event.target.value) }}
           />
+          {!formInputsValidity.postalCode && notification("Please enter a valid postal code!")}
         </div>
         <div>
           <input
             type='text'
+            ref={cityInputRef}
             disabled={true}
-            value={city}
+            value={"Mumbai"}
             placeholder='Enter your city'
-            onChange={(event) => { setCity(event.target.value) }}
           />
+          {!formInputsValidity.city && notification("Please enter a valid city!")}
         </div>
       </div>
 
       <div>
         <button type='submit' className={classes.submitButton}>Register</button>
+        <ToastContainer></ToastContainer>
       </div>
       <div>
         <button type="button" className={classes.signinButton} onClick={() => {
