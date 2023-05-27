@@ -26,8 +26,10 @@ mongoose
 /* ROUTES */
 const authRouter = require("./routes/auth");
 const mealsRouter = require("./routes/meals");
+const userinformation = require("./routes/userinformation");
 app.use("", authRouter);
 app.use("", mealsRouter);
+app.use("", userinformation);
 
 //PORT Connection
 app.listen(PORT, () => {

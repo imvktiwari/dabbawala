@@ -1,6 +1,6 @@
 .form {
   margin: 1rem 0;
-  height: 19rem;
+  height: auto;
   overflow: auto;
 }
 
@@ -18,7 +18,7 @@
   font: inherit;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 20rem;
+  width: 40rem;
   max-width: 100%;
 }
 

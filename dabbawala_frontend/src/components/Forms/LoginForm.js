@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import axios from "axios";
 import { useNavigate } from "react-router";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import classes from './LoginForm.module.css';
@@ -16,7 +16,7 @@ const LoginForm = () => {
 
   const submitHandler = async (event) => {
     event.preventDefault();
-    
+
     const enteredData = {
       email: enteredEmail,
       password: enteredPassword,
@@ -34,20 +34,36 @@ const LoginForm = () => {
       if (!response.ok) {
         throw new Error('You are not registered!');
       }
-      toast.success("Successfully Signed Up !", {
-        position: toast.POSITION.TOP_CENTER,
+      toast.success('Logged In', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
       });
       // console.log(response.data.id);
       localStorage.setItem(
         "dabbawala",
         JSON.stringify(enteredEmail));
       setTimeout(() => {
-          navigate("/");
-        }, 1000);
+        navigate("/");
+      }, 1000);
       console.log(enteredData);
     };
     entryData().catch((error) => {
-      alert(error.message);
+      toast.error(error.message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
     });
   };
 
@@ -93,6 +109,7 @@ const LoginForm = () => {
 
       <div>
         <button type='submit' className={classes.submitButton}>Log In</button>
+        <ToastContainer></ToastContainer>
       </div>
       <div>
         <button type="button" className={classes.signupButton} onClick={() => {
