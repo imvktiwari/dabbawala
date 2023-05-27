@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 import classes from './RegisterForm.module.css';
@@ -15,12 +17,12 @@ const LoginForm = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
 
 
-  const BACKEND_BASE_URL = "http://localhost:4000";
+  const BACKEND_BASE_URL = "http://localhost:5000";
   const navigate = useNavigate();
 
   const submitHandler = async (event) => {
     event.preventDefault();
-    const res = await axios.post(`${BACKEND_BASE_URL}/register`, {
+    const enteredData = {
       name: name,
       email: email,
       password: password,
@@ -28,17 +30,32 @@ const LoginForm = () => {
       city: city,
       postalcode: postalcode,
       phone: phoneNumber,
-    });
-    if (res.status === "200") {
+    };
+    const entryData = async () => {
+      const response = await fetch(
+        `${BACKEND_BASE_URL}/register`, {
+        method: 'POST',
+        body: JSON.stringify(enteredData),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+      );
+      
+      if (!response.ok) {
+        throw new Error('Something went wrong!');
+      }
+      toast.success("Successfully Signed Up !", {
+        position: toast.POSITION.TOP_CENTER,
+      });
       setTimeout(() => {
         navigate("/login");
       }, 1000);
-    } else {
-      console.log("Error in sign up");
-    }
-    console.log(
-      `Name: ${name}, Email: ${email}, Password: ${password}, WORK ADDRESS: ${workaddress}, Phone Number: ${phoneNumber},CITY:${city},POSTALCODE:${postalcode}`
-    );
+      console.log(enteredData);
+    };
+    entryData().catch((error) => {
+      alert(error.message);
+    });
   };
 
   useEffect(() => {
@@ -125,8 +142,6 @@ const LoginForm = () => {
 }
 
 export default LoginForm;
-
-
 
 
 

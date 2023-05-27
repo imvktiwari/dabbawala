@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import classes from './LoginForm.module.css';
 
@@ -9,30 +11,44 @@ const LoginForm = () => {
   const [enteredPassword, setEnteredPassword] = useState('');
 
 
-  const BACKEND_BASE_URL = "http://localhost:4000";
+  const BACKEND_BASE_URL = "http://localhost:5000";
   const navigate = useNavigate();
 
   const submitHandler = async (event) => {
     event.preventDefault();
-    const res = await axios.post(`${BACKEND_BASE_URL}/login`, {
+    
+    const enteredData = {
       email: enteredEmail,
       password: enteredPassword,
-    });
-    alert(res.data.message);
-    if (res.status === "200") {
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
-    }
-
-    if (res.data.message === "login successful") {
+    };
+    const entryData = async () => {
+      const response = await fetch(
+        `${BACKEND_BASE_URL}/login`, {
+        method: 'POST',
+        body: JSON.stringify(enteredData),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+      );
+      if (!response.ok) {
+        throw new Error('You are not registered!');
+      }
+      toast.success("Successfully Signed Up !", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      // console.log(response.data.id);
       localStorage.setItem(
         "dabbawala",
-        JSON.stringify(res.data.user)
-      );
-    } else {
-      alert("Something went wrong");
-    }
+        JSON.stringify(response.data.id));
+      setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      console.log(enteredData);
+    };
+    entryData().catch((error) => {
+      alert(error.message);
+    });
   };
 
   useEffect(() => {
