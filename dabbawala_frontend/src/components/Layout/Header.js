@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 
 
 import HeaderCartButton from './HeaderCartButton';
+import Logout from '../Logout'
 import classes from './Header.module.css';
 
 const Header = (props) => {
@@ -10,6 +11,7 @@ const Header = (props) => {
       <header className={classes.header}>
         <h1>मुंबईचा डब्बावाला</h1>
         <HeaderCartButton onClick={props.onShowCart} />
+        <Logout></Logout>
       </header>
       <div className={classes['main-image']}>
         <img src='https://img.redbull.com/images/q_auto,f_auto/redbullcom/2022/8/4/ikl4kaca6ieuy7q7kb4w/dabbawalas-mumbai' alt='A table full of delicious food!' />

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { useNavigate } from "react-router";
 import Card from '../UI/Card';
 import MealItem from './MealItem/MealItem';
 import classes from './AvailableMeals.module.css';
@@ -9,10 +10,12 @@ const AvailableMeals = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState();
 
+  const BACKEND_BASE_URL = "http://localhost:5000";
+
   useEffect(() => {
     const fetchMeals = async () => {
       const response = await fetch(
-        'https://react-http-7f96f-default-rtdb.firebaseio.com/Meals.json'
+        `${BACKEND_BASE_URL}/mealslist`
       );
 
       if (!response.ok) {

@@ -13,8 +13,6 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const authRouter = require("./routes/auth");
-// const postRouter = require("./routes/posts");
 
 /* MONGOOSE CONNECT */
 mongoose
@@ -26,8 +24,10 @@ mongoose
 
 
 /* ROUTES */
+const authRouter = require("./routes/auth");
+const mealsRouter = require("./routes/meals");
 app.use("", authRouter);
-
+app.use("", mealsRouter);
 
 //PORT Connection
 app.listen(PORT, () => {

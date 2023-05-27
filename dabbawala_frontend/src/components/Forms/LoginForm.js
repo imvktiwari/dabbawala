@@ -40,7 +40,7 @@ const LoginForm = () => {
       // console.log(response.data.id);
       localStorage.setItem(
         "dabbawala",
-        JSON.stringify(response.data.id));
+        JSON.stringify(enteredEmail));
       setTimeout(() => {
           navigate("/");
         }, 1000);

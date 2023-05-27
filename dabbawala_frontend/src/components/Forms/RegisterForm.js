@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 
 import classes from './RegisterForm.module.css';
+//NOW USING REACT TO VALIDATE FORM
 
 const LoginForm = () => {
   const [name, setName] = useState("");
@@ -41,10 +42,11 @@ const LoginForm = () => {
         }
       }
       );
-      
+      //ERROR
       if (!response.ok) {
         throw new Error('Something went wrong!');
       }
+//SUCCESS
       toast.success("Successfully Signed Up !", {
         position: toast.POSITION.TOP_CENTER,
       });

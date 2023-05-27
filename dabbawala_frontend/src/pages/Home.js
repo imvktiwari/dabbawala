@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router";
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import Meals from '../components/Meals/Meals';
@@ -16,7 +16,12 @@ const Home = () => {
     const hideCartHandler = () => {
         setCartIsShown(false);
     };
-
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (!localStorage["dabbawala"]) {
+            navigate("/login");
+        }
+    }, []);
     return (
         <CartProvider>
             {cartIsShown && <Cart onClose={hideCartHandler} />}
