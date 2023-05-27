@@ -18,10 +18,17 @@
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   font-weight: bolder;
 }
-.formInputControl input { 
+
+.formInputControl {
+  width: 100%;
+}
+
+.formInputControl input {
+  margin-left: 20%;
+  margin-right: 20%;
   text-align: center;
   size: auto;
-  width:100%;
+  width: 60%;
   background: transparent;
   border-bottom: 1px solid #8a2b06;
   border-top: none;
@@ -30,7 +37,7 @@
   overflow: hidden;
   color: #8a2b06;
 
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-family: sans-serif;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 
@@ -39,13 +46,16 @@
 
 input:focus {
   outline: none;
+  border-bottom: 1px dashed #8a2b06;
 }
+
 input:focus::placeholder {
   color: transparent;
 }
 
 ::placeholder {
-  color: rgb(105, 99, 99);
+  color: #714635;
+  opacity: 70%;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   letter-spacing: normal;
   font-size: auto;
@@ -58,12 +68,14 @@ input:focus::placeholder {
   background-color: transparent;
   border: none;
   border-radius: 25px;
-  padding: 0.5rem 2rem; 
+  padding: 0.5rem 2rem;
 }
+
 .signupButton:hover,
 .signupButton:active {
   color: black;
 }
+
 .submitButton {
   background-color: #5a1a01;
   color: white;
@@ -74,6 +86,7 @@ input:focus::placeholder {
   padding-left: 5%;
   cursor: pointer;
 }
+
 .submitButton:hover,
 .submitButton:active {
   background-color: #0b0300e4;

@@ -58,8 +58,6 @@ const LoginForm = () => {
       <h2>Sign In</h2>
       <div className={classes.formInputControl}>
         <div>
-          {/* <label>Email Id</label> */}
-          <br></br>
           <input
             type='email'
             value={enteredEmail}
@@ -67,8 +65,7 @@ const LoginForm = () => {
             onChange={emailChangeHandler}
           />
         </div>
-        <div className={classes.formInputControl}>
-          {/* <label>Password</label> */}
+        <div>
           <input
             type='password'
             placeholder='Enter your password'
