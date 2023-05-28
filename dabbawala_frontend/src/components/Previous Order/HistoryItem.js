@@ -9,7 +9,6 @@ const HistoryItem = (props) => {
     else
         payment = "Google Pay";
     console.log(props);
-    const [newUser, setNewUser] = useState(false);
     const orderedItems = props.ordereditems;
 
     const OrderedList = (
