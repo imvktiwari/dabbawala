@@ -75,6 +75,7 @@ const AvailableMeals = () => {
   if (filteredCourse == 0)
     filteredMeals = meals;
   // console.log(meals);
+  // console.log(typeof(filteredMeals));
   // console.log(filteredMeals);
   const mealsList = filteredMeals.map((meal) => (
     <MealItem

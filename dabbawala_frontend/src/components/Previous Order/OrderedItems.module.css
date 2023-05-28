@@ -1,0 +1,21 @@
+.summary {
+    width: 30rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .price {
+    font-weight: bold;
+    width: 10rem;
+    color: #8a2b06;
+  }
+  
+  .amount {
+    font-weight: bold;
+    /* border: 1px solid #ccc; */
+    border:none;
+    /* padding: 0.10rem 0.20rem; */
+    border-radius: 6px;
+    color: #363636;
+  }

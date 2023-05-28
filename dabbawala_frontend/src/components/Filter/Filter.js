@@ -12,10 +12,9 @@ const Filter = (props) => {
             <div className={classes.filter__control}>
                 {/* <label>Filter your course</label> */}
                 <select value={props.selected} onChange={dropdownChangeHandler}>
-                    <option value='4'>Drinks and Icecream</option>
-                    <option value='3'>Cakes and Dessert</option>
-                    <option value='2'>Main Course</option>
-                    <option value='1'>Starters</option>
+                    <option value='3'>Special pack</option>
+                    <option value='2'>Family pack</option>
+                    <option value='1'>Basic pack</option>
                     <option value='0'>No Filter</option>
                 </select>
             </div>
