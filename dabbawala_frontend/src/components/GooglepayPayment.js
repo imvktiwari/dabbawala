@@ -1,9 +1,12 @@
 import GooglePayButton from '@google-pay/button-react'
+// import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function GooglepayPayment() {
   return (
     <GooglePayButton
       environment="TEST"
-      buttontype="donate"
+      buttonSizeMode='fill'
+      buttonColor='white'
       paymentRequest={{
         apiVersion: 2,
         apiVersionMinor: 0,

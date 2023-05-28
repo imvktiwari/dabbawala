@@ -27,10 +27,10 @@
   justify-content: flex-end;
   gap: 1rem;
 }
-
 .actions button {
   font: inherit;
   color: #5a1a01;
+  /* color: black; */
   cursor: pointer;
   background-color: transparent;
   border: none;

@@ -32,7 +32,7 @@ const LoginForm = () => {
       }
       );
       if (!response.ok) {
-        throw new Error('You are not registered!');
+        throw new Error('Invalid Credentials !');
       }
       toast.success('Logged In', {
         position: "top-center",

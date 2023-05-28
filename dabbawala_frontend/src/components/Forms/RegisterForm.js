@@ -103,7 +103,7 @@ const LoginForm = () => {
       workaddress: enteredWorkaddress,
       city: enteredCity,
       postalcode: enteredPostalCode,
-      phone: enteredPhoneNumber,
+      phonenumber: enteredPhoneNumber,
     };
 
     const entryData = async () => {

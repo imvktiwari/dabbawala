@@ -1,7 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 // import { useNavigate } from "react-router";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import GooglepayPayment from '../GooglepayPayment'
 
 import classes from './Checkout.module.css';
 //NOW USING REACT TO VALIDATE FORM
@@ -10,10 +12,9 @@ const isSixChars = (value) => value.trim().length === 6;//For Postal Code
 const isTenChars = (value) => value.trim().length === 10;
 
 const Checkout = (props) => {
-  const [editallowed, setEditallowed] = useState(true);
-
-  const LoggedInEmail = localStorage.getItem("dabbawala");
-  
+  const [editallowed, setEditallowed] = useState(true);//Edit you information
+  const [payment, setPayment] = useState("UPI");
+  //Reference setup
   const notification = (noti) => {
     toast.error(noti, {
       position: "top-center",
@@ -42,9 +43,62 @@ const Checkout = (props) => {
   const phoneNumberInputRef = useRef();
 
 
+
+  //Getting Information from localStorage...
+  const BACKEND_BASE_URL = "http://localhost:5000";
+  const LoggedInEmail = localStorage.getItem("dabbawala");
+  const URL = `${BACKEND_BASE_URL}/userinformation/${LoggedInEmail.replace(/['"]+/g, '')}`;//to replace double inverted from email-id.
+  useEffect(() => {
+    const fetchDetails = async () => {
+      // console.log(URL);
+
+      const response = await fetch(URL);
+
+      if (!response.ok) {
+        throw new Error('Something went wrong!');
+      }
+
+      const responseData = await response.json();
+      // console.log(responseData);
+      
+      // for (const key in responseData) {
+      //   loadedMeals.push({
+      //     id: key,
+      //     name: responseData[key].name,
+      //     description: responseData[key].description,
+      //     price: responseData[key].price,
+      //   });
+      // }
+
+
+      nameInputRef.current.value = responseData.name;
+      workaddressInputRef.current.value = responseData.workaddress;
+      postalCodeInputRef.current.value = responseData.postalcode;
+      cityInputRef.current.value = responseData.city;
+      phoneNumberInputRef.current.value = responseData.phonenumber;
+
+
+
+
+    };
+
+    fetchDetails().catch((error) => {
+      alert("rftgyhujk");
+    });
+  }, []);
+
+
+
+
+
+
+
+
+
+
+
   const confirmHandler = (event) => {
     event.preventDefault();
-
 
     const enteredName = nameInputRef.current.value;
     const enteredWorkaddress = workaddressInputRef.current.value;
@@ -78,25 +132,49 @@ const Checkout = (props) => {
     if (!formIsValid) {
       return;
     }
+    //What I want to send back to save.state={
+    let myCurrentDate = new Date()
+    let date = myCurrentDate.getDate();
+    let month = myCurrentDate.getMonth() + 1;
+    let year = myCurrentDate.getFullYear();
 
-
-
-
-
-
-
-
-
-
-
-
-    
+    // console.log(`${year}${ }${(month < 10) ? `0${month}` : `${month}`}${ }${date}`);
+    // alert(`${year}-${month}-${date}`)
     props.onConfirm({
-      name: enteredName,
-      workaddress: enteredWorkaddress,
-      city: enteredCity,
-      postalcode: enteredPostalCode,
-      phone: enteredPhoneNumber,
+      date: `${date}-${month}-${year}`,
+      payment: payment,
+    });
+  };
+
+  async function updateHandler() {
+    setEditallowed(!editallowed)
+    const enteredData = {
+      name: nameInputRef.current.value,
+      workaddress: workaddressInputRef.current.value,
+      city: cityInputRef.current.value,
+      postalcode: postalCodeInputRef.current.value,
+      phonenumber: phoneNumberInputRef.current.value,
+    };
+
+    const response = await fetch(
+      `${BACKEND_BASE_URL}/updateuserinformation/${LoggedInEmail.replace(/['"]+/g, '')}`, {
+      method: 'PUT',
+      body: JSON.stringify(enteredData),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    );
+    //SUCCESS
+    toast.success('Updated!', {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
     });
   };
 
@@ -167,15 +245,26 @@ const Checkout = (props) => {
           {!formInputsValidity.city && notification("Please enter a valid city!")}
         </div>
       </div>
-
+      <button type='button' style={{ visibility: !editallowed ? "hidden" : "visible", border: "none", background: "transparent" }} onClick={() => { setEditallowed(!editallowed) }}>
+        Edit your information
+      </button>
+      <br></br>
+      <button type='button' className={classes.actions} style={{ visibility: editallowed ? "hidden" : "visible", color: "white", background: "#8a2b06" }} onClick={updateHandler}>
+        Update
+      </button>
+      <div>
+        <label>Method Of Payment   : </label>
+        <select value={payment} onChange={(event) => setPayment(event.target.value)}>
+          <option value='COD'>Cash on Delivery</option>
+          <option value='UPI'>Using Google Pay</option>
+        </select>
+      </div>
+      <br></br>
       <div className={classes.actions}>
-        <button type='button' style={{ visibility: !editallowed ? "hidden" : "visible" }} onClick={() => { setEditallowed(!editallowed) }}>
-          Edit your information
-        </button>
         <button type='button' onClick={props.onCancel}>
           Cancel
         </button>
-        <button className={classes.submit}>Confirm</button>
+        <button className={classes.submit} >{payment == "COD" ? "Confirm" : <GooglepayPayment></GooglepayPayment>}</button>
         <ToastContainer></ToastContainer>
       </div>
     </form >);

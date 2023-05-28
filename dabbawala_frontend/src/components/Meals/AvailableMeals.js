@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 import Card from '../UI/Card';
 import MealItem from './MealItem/MealItem';
 import classes from './AvailableMeals.module.css';
