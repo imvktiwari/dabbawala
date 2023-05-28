@@ -3,9 +3,13 @@ import { useEffect, useState } from 'react';
 // import { useNavigate } from "react-router";
 import Card from '../UI/Card';
 import MealItem from './MealItem/MealItem';
+import Filter from '../Filter/Filter';
 import classes from './AvailableMeals.module.css';
 
 const AvailableMeals = () => {
+
+  const [filteredCourse, setFilteredCourse] = useState('0');
+
   const [meals, setMeals] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [httpError, setHttpError] = useState();
@@ -31,6 +35,7 @@ const AvailableMeals = () => {
           id: key,
           name: responseData[key].name,
           description: responseData[key].description,
+          category: responseData[key].category,
           price: responseData[key].price,
         });
       }
@@ -60,20 +65,35 @@ const AvailableMeals = () => {
       </section>
     );
   }
-
-  const mealsList = meals.map((meal) => (
+  // console.log(meals);
+  const filterChangeHandler = (selectedCourse) => {
+    setFilteredCourse(selectedCourse);
+  };
+  let filteredMeals = meals.filter((meals) => {
+    return meals.category == filteredCourse;
+  });
+  if (filteredCourse == 0)
+    filteredMeals = meals;
+  // console.log(meals);
+  // console.log(filteredMeals);
+  const mealsList = filteredMeals.map((meal) => (
     <MealItem
       key={meal.id}
       id={meal.id}
       name={meal.name}
+      category={meal.category}
       description={meal.description}
       price={meal.price}
     />
   ));
 
+
   return (
     <section className={classes.meals}>
       <Card>
+        <Filter
+          selected={filteredCourse}
+          onChangeFilter={filterChangeHandler} ></Filter>
         <ul>{mealsList}</ul>
       </Card>
     </section>
