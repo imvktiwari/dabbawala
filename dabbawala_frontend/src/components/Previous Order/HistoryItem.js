@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import classes from './HistoryItem.module.css';
 import OrderedItems from './OrderedItems';
 
